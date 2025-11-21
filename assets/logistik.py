@@ -135,10 +135,10 @@ g = Gudang()
 
 # Muat JSON jika ada
 try:
-    g.muat_json("database/logistik.json")
+    g.muat_json("assets/database/logistik.json")
 except FileNotFoundError:
     print("File JSON tidak ada, akan dibuat nanti.")
 
 # Simpan JSON
-g.simpan_json("database/logistik.json")
+g.simpan_json("assets/database/logistik.json")
 
