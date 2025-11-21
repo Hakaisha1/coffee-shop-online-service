@@ -1,0 +1,32 @@
+[
+    {
+        "nama": "Kopi Arabika Premium",
+        "stok": 50,
+        "harga": 85000,
+        "kadaluarsa": "2025-12-31"
+    },
+    {
+        "nama": "Kopi Robusta",
+        "stok": 100,
+        "harga": 65000,
+        "kadaluarsa": "2025-11-30"
+    },
+    {
+        "nama": "Susu Kental Manis",
+        "stok": 30,
+        "harga": 12000,
+        "kadaluarsa": "2025-10-15"
+    },
+    {
+        "nama": "Gula Pasir",
+        "stok": 200,
+        "harga": 8000,
+        "kadaluarsa": null
+    },
+    {
+        "nama": "Coklat Bubuk",
+        "stok": 20,
+        "harga": 35000,
+        "kadaluarsa": "2026-03-20"
+    }
+]

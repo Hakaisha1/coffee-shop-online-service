@@ -142,3 +142,62 @@ except FileNotFoundError:
 # Simpan JSON
 g.simpan_json("assets/database/logistik.json")
 
+
+# Menu interaktif
+# if __name__ == "__main__":
+#     while True:
+#         print("\n" + "="*50)
+#         print("SISTEM MANAJEMEN LOGISTIK KOPI")
+#         print("="*50)
+#         print("1. Tampilkan semua barang")
+#         print("2. Cari barang")
+#         print("3. Tambah barang baru")
+#         print("4. Hapus barang")
+#         print("5. Keluar")
+#         print("="*50)
+        
+#         pilihan = input("Pilih menu (1-5): ").strip()
+        
+#         if pilihan == "1":
+#             print("\n--- Daftar Barang ---")
+#             g.tampilkan_semua_barang()
+            
+#         elif pilihan == "2":
+#             nama = input("Masukkan nama barang yang dicari: ").strip()
+#             hasil = g.cari_barang(nama)
+#             if hasil:
+#                 print(f"\nHasil pencarian untuk '{nama}':")
+#                 for barang in hasil:
+#                     print(barang.info())
+#             else:
+#                 print(f"Barang '{nama}' tidak ditemukan.")
+                
+#         elif pilihan == "3":
+#             nama = input("Nama barang: ").strip()
+#             stok = int(input("Stok: "))
+#             harga = int(input("Harga: "))
+#             kadaluarsa = input("Tanggal kadaluarsa (YYYY-MM-DD) atau kosongkan: ").strip()
+            
+#             barang_baru = Barang(nama, stok, harga, kadaluarsa if kadaluarsa else None)
+#             g.tambah_barang(barang_baru)
+#             print(f" Barang '{nama}' berhasil ditambahkan!")
+            
+#             # Simpan ke JSON
+#             g.simpan_json("assets/database/logistik.json")
+#             print(" Data tersimpan ke JSON.")
+            
+#         elif pilihan == "4":
+#             nama = input("Masukkan nama barang yang akan dihapus: ").strip()
+#             g.hapus_barang(nama)
+            
+#             # Simpan ke JSON
+#             g.simpan_json("assets/database/logistik.json")
+#             print(" Data tersimpan ke JSON.")
+            
+#         elif pilihan == "5":
+#             print("\nTerima kasih! Program ditutup.")
+#             break
+            
+#         else:
+#             print(" Pilihan tidak valid! Silakan coba lagi.")
+
