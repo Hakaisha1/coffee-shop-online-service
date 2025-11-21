@@ -129,6 +129,7 @@ class CustomerReport(Report):
 class EmployeeReport(Report):
     def __init__(self):
         super().__init__("Laporan Karyawan")
+        
 
 class ReportManager:
     pass

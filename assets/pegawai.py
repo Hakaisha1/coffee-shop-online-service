@@ -125,7 +125,7 @@ m = manajemen_pegawai()
 m.tambah_pegawai(b1)
 m.tambah_pegawai(b2)
 
-m.simpan_data('pegawai.json')
+m.simpan_data('assets/database/pegawai.json')
 
 hasil = m.cari_pegawai('111')
 
