@@ -1,0 +1,31 @@
+{
+    "riwayat": [
+        {
+            "customer": "ais",
+            "pesanan": [
+                {
+                    "menu": "Espresso",
+                    "jumlah": 1,
+                    "subtotal": 20000
+                }
+            ],
+            "total": 20000
+        },
+        {
+            "customer": "ana",
+            "pesanan": [
+                {
+                    "menu": "Ice Cafe Latte",
+                    "jumlah": 2,
+                    "subtotal": 50000
+                },
+                {
+                    "menu": "Cappucino",
+                    "jumlah": 1,
+                    "subtotal": 23000
+                }
+            ],
+            "total": 73000
+        }
+    ]
+}
