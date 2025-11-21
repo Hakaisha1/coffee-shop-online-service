@@ -33,12 +33,12 @@
       "join_date": "YYYY-MM-DD"
     }
   ],
-  "employees": [
+  "pegawai": [
     {
-      "id": "EMPLOYEE_ID_PLACEHOLDER",
-      "name": "EMPLOYEE_NAME_PLACEHOLDER",
-      "position": "POSITION_PLACEHOLDER",
-      "hire_date": "YYYY-MM-DD",
+      "id": "PEGAWAI_ID_PLACEHOLDER",
+      "nama": "PEGAWAI_NAME_PLACEHOLDER",
+      "posisi": "POSITION_PLACEHOLDER",
+      "shift": "SHIFT_PLACEHOLDER",
       "phone": "PHONE_PLACEHOLDER"
     }
   ]
