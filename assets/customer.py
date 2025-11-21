@@ -52,7 +52,7 @@ class Pembayaran:
 class Customer:
     def __init__(self, nama):
         self.nama = nama
-        self.file_json = "customer.json"  # DIGANTI DI SINI
+        self.file_json = "customer.json" 
         self.riwayat = self.load_riwayat()
 
     # Load riwayat dari file JSON
