@@ -130,8 +130,15 @@ class LogistikManager:
 
 
 
-g = Gudang
+g = Gudang()
 
 
+# Muat JSON jika ada
+try:
+    g.muat_json("database/logistik.json")
+except FileNotFoundError:
+    print("File JSON tidak ada, akan dibuat nanti.")
+
+# Simpan JSON
 g.simpan_json("database/logistik.json")
 
