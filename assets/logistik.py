@@ -1,4 +1,6 @@
 # Kode bagian logistik
+import json
+
 class Barang:
     def __init__(self, nama, stok, harga, kadaluarsa=None):
         self.nama = nama
@@ -74,6 +76,37 @@ class Gudang:
                 return
         print("Barang tidak ditemukan.")
 
+
+    def simpan_json(self, logistik):
+        data = []
+        for b in self.daftar_barang:
+            data.append({
+                "nama": b.nama,
+                "stok": b.stok,
+                "harga": b.harga,
+                "kadaluarsa": b.kadaluarsa
+            })
+
+        with open(logistik, "w") as f:
+            json.dump(data, f, indent=4)
+
+    def muat_json(self, logistik):
+        with open(logistik, "r") as f:
+            data = json.load(f)
+
+        self.daftar_barang = []
+        for item in data:
+            barang = Barang(
+                item["nama"],
+                item["stok"],
+                item["harga"],
+                item["kadaluarsa"]
+            )
+            self.daftar_barang.append(barang)
+
+            
+
+
     def tampilkan_semua_barang(self):
         for barang in self.daftar_barang:
             print(barang.info())
@@ -94,4 +127,11 @@ class LogistikManager:
     def tampilkan_riwayat(self):
         for trx in self.riwayat_transaksi:
             print(trx.info())
+
+
+
+g = Gudang
+
+
+g.simpan_json("database/logistik.json")
 
