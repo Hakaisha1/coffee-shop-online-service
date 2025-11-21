@@ -1,0 +1,31 @@
+{
+    "customer": [
+        {
+            "customer": "ais",
+            "pesanan": [
+                {
+                    "menu": "Espresso",
+                    "jumlah": 2,
+                    "subtotal": 40000
+                }
+            ],
+            "total": 40000
+        },
+        {
+            "customer": "ana",
+            "pesanan": [
+                {
+                    "menu": "Butterscotch Coffee",
+                    "jumlah": 1,
+                    "subtotal": 32000
+                },
+                {
+                    "menu": "Ice Cafe Latte",
+                    "jumlah": 2,
+                    "subtotal": 50000
+                }
+            ],
+            "total": 82000
+        }
+    ]
+}
