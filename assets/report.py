@@ -12,8 +12,7 @@ class DataLoader:
                 'main': 'assets/database/data.json',
                 'employees': 'assets/database/pegawai.json',
                 'logistics': 'assets/database/logistik.json',
-                'menu': 'assets/database/menu.json',
-                'orders': 'assets/database/orders.json'
+                'customers': 'assets/database/customers.json',
             }
         else:
             self.json_files = json_files
@@ -22,11 +21,11 @@ class DataLoader:
     
     def load_data(self, key:str=None) -> Dict:
         if key:
-            return self._load_single_file(key)
+            return self.load_single_file(key)
         else:
-            return self._load_all_files()
+            return self.load_all_files()
     
-    def _load_single_file(self, key:str) -> Dict:
+    def load_single_file(self, key:str) -> Dict:
         file_path = self.json_files.get(key)
         if not file_path:
             raise ValueError(f"File untuk key '{key}' tidak ditemukan.")
@@ -133,37 +132,7 @@ class EmployeeReport(Report):
         return self.content
     
 class InventoryReport(Report):
-    def __init__(self):
-        super().__init__("Laporan Inventaris")
-    
-    def generate(self):
-        print("Generating Inventory Report...")
-        
-        data = self.data_loader.load_data()
-        products = data.get('products', [])
-        
-        if not products:
-            self.content = {'message': 'Tidak ada data produk'}
-            return self.content
-        
-
-        low_stock = [p for p in products if p.get('stock', 0) < 10]
-
-        total_inventory_value = sum(
-            p.get('price', 0) * p.get('stock', 0) 
-            for p in products
-        )
-        
-        self.content = {
-            'total_produk': len(products),
-            'total_nilai_inventaris': f"Rp {total_inventory_value:,}",
-            'produk_stok_menipis': len(low_stock),
-            'detail_stok_menipis': low_stock,
-            'semua_produk': products
-        }
-        
-        print("Inventory Report generated!")
-        return self.content
+    pass
 
 class CustomerReport(Report):
     def __init__(self):
@@ -215,5 +184,4 @@ class ReportManager:
         employee_report = EmployeeReport()
         employee_report.generate()
         return employee_report.best_employee
-    
     
