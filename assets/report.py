@@ -103,10 +103,9 @@ class InventoryReport(Report):
             self.content = {'message': 'Tidak ada data produk'}
             return self.content
         
-        # Produk dengan stok menipis (< 10)
+
         low_stock = [p for p in products if p.get('stock', 0) < 10]
-        
-        # Total nilai inventaris
+
         total_inventory_value = sum(
             p.get('price', 0) * p.get('stock', 0) 
             for p in products

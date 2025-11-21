@@ -1,0 +1,45 @@
+{
+  "transactions": [
+    {
+      "id": "TRX_ID_PLACEHOLDER",
+      "date": "YYYY-MM-DD",
+      "customer_id": "CUSTOMER_ID_PLACEHOLDER",
+      "employee_id": "EMPLOYEE_ID_PLACEHOLDER",
+      "items": [
+        {
+          "product": "PRODUCT_NAME_PLACEHOLDER",
+          "quantity": 0,
+          "price": 0
+        }
+      ],
+      "total_amount": 0
+    }
+  ],
+  "products": [
+    {
+      "id": "PRODUCT_ID_PLACEHOLDER",
+      "name": "PRODUCT_NAME_PLACEHOLDER",
+      "category": "CATEGORY_PLACEHOLDER",
+      "price": 0,
+      "stock": 0
+    }
+  ],
+  "customers": [
+    {
+      "id": "CUSTOMER_ID_PLACEHOLDER",
+      "name": "CUSTOMER_NAME_PLACEHOLDER",
+      "phone": "PHONE_PLACEHOLDER",
+      "email": "EMAIL_PLACEHOLDER",
+      "join_date": "YYYY-MM-DD"
+    }
+  ],
+  "employees": [
+    {
+      "id": "EMPLOYEE_ID_PLACEHOLDER",
+      "name": "EMPLOYEE_NAME_PLACEHOLDER",
+      "position": "POSITION_PLACEHOLDER",
+      "hire_date": "YYYY-MM-DD",
+      "phone": "PHONE_PLACEHOLDER"
+    }
+  ]
+}
