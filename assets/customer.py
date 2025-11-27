@@ -31,15 +31,50 @@ class Pesanan:
         return self.total
 
 
+class Riwayat:
+    def __init__(self, entries=None):
+        # entries: list of dict (may be from existing JSON)
+        self.entries = entries.copy() if entries else []
+
+    def add_topup(self, customer, awal, jumlah, akhir):
+        entry = {
+            "jenis": "top up",
+            "customer": customer,
+            "saldo_awal": awal,
+            "perubahan": jumlah,
+            "saldo_akhir": akhir
+        }
+        self.entries.append(entry)
+
+    def add_pembelian(self, customer, awal, total_belanja, akhir, pesanan_list):
+        # pesanan_list: list of dict {menu, jumlah, subtotal}
+        entry = {
+            "jenis": "pembelian",
+            "customer": customer,
+            "saldo_awal": awal,
+            "total_belanja": total_belanja,
+            "saldo_akhir": akhir,
+            "pesanan": pesanan_list
+        }
+        self.entries.append(entry)
+
+    def get_for(self, customer):
+        return [e for e in self.entries if e.get("customer") == customer]
+
+    def to_list(self):
+        return self.entries
+
+
 class Customer:
     def __init__(self, nama):
         self.nama = nama
         self.file_json = "customer.json"
         self.data = self.load_data()
 
-        # Data saldo & riwayat
+        # saldo as dict mapping name->amount (backwards compatible)
         self.saldo = self.data.get("saldo", {})
-        self.riwayat = self.data.get("riwayat", [])
+        # riwayat managed by Riwayat class
+        self.riwayat = Riwayat(self.data.get("riwayat", []))
 
         # Jika customer baru → saldo mulai 0
         if self.nama not in self.saldo:
@@ -51,12 +86,15 @@ class Customer:
         if not os.path.exists(self.file_json):
             return {"saldo": {}, "riwayat": []}
         with open(self.file_json, "r") as f:
-            return json.load(f)
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                # kalau file rusak/ kosong, inisialisasi ulang
+                return {"saldo": {}, "riwayat": []}
 
-    # Save JSON
     def simpan_data(self):
         with open(self.file_json, "w") as f:
-            json.dump({"saldo": self.saldo, "riwayat": self.riwayat}, f, indent=4)
+            json.dump({"saldo": self.saldo, "riwayat": self.riwayat.to_list()}, f, indent=4)
 
     # Top up saldo
     def top_up(self):
@@ -66,22 +104,17 @@ class Customer:
             if jumlah > 0:
                 saldo_awal = self.saldo[self.nama]
                 self.saldo[self.nama] += jumlah
-                self.simpan_data()
+                saldo_akhir = self.saldo[self.nama]
 
-                # Catat riwayat top up
-                self.riwayat.append({
-                    "jenis": "top up",
-                    "customer": self.nama,
-                    "saldo_awal": saldo_awal,
-                    "perubahan": jumlah,
-                    "saldo_akhir": self.saldo[self.nama]
-                })
+                # catat riwayat via Riwayat class
+                self.riwayat.add_topup(self.nama, saldo_awal, jumlah, saldo_akhir)
+                # simpan kedua data (saldo + riwayat)
                 self.simpan_data()
 
                 print(f"Top up berhasil! Saldo Anda kini: Rp{self.saldo[self.nama]:,}")
             else:
                 print("Jumlah harus lebih dari 0.")
-        except:
+        except ValueError:
             print("Masukkan angka yang valid.")
 
     # Bayar pakai saldo
@@ -89,24 +122,17 @@ class Customer:
         if self.saldo[self.nama] >= total:
             saldo_awal = self.saldo[self.nama]
             self.saldo[self.nama] -= total
-            self.simpan_data()
+            saldo_akhir = self.saldo[self.nama]
 
-            # Catat riwayat pembelian
-            self.riwayat.append({
-                "jenis": "pembelian",
-                "customer": self.nama,
-                "saldo_awal": saldo_awal,
-                "total_belanja": total,
-                "saldo_akhir": self.saldo[self.nama],
-                "pesanan": [
-                    {
-                        "menu": item.nama,
-                        "jumlah": jumlah,
-                        "subtotal": subtotal
-                    }
-                    for item, jumlah, subtotal in daftar_pesanan
-                ]
-            })
+            # siapkan detail pesanan sebagai list of dict
+            pesanan_list = [
+                {"menu": item.nama, "jumlah": jumlah, "subtotal": subtotal}
+                for item, jumlah, subtotal in daftar_pesanan
+            ]
+
+            # catat riwayat pembelian via Riwayat
+            self.riwayat.add_pembelian(self.nama, saldo_awal, total, saldo_akhir, pesanan_list)
+            # simpan data
             self.simpan_data()
 
             print("\nPembayaran berhasil menggunakan saldo!")
@@ -114,11 +140,11 @@ class Customer:
             return True
         return False
 
-    # Lihat riwayat (format aman tidak error)
+    # Lihat riwayat 
     def lihat_riwayat(self):
         print("\n=== Riwayat Transaksi & Saldo ===")
 
-        data = [r for r in self.riwayat if r["customer"] == self.nama]
+        data = self.riwayat.get_for(self.nama)
 
         if not data:
             print("Belum ada riwayat.")
@@ -134,16 +160,23 @@ class Customer:
             saldo_akhir = transaksi.get("saldo_akhir", saldo_awal)
 
             print(f"Saldo awal   : Rp{saldo_awal:,}")
-            print(f"Saldo akhir  : Rp{saldo_akhir:,}")
-
+            # jika top up
             if jenis == "top up":
-                print(f"Top up       : Rp{transaksi.get('perubahan', 0):,}")
-
-            if jenis == "pembelian":
-                print(f"Total belanja: Rp{transaksi.get('total_belanja', 0):,}")
+                perubahan = transaksi.get("perubahan", 0)
+                print(f"Top up       : Rp{perubahan:,}")
+                print(f"Saldo akhir  : Rp{saldo_akhir:,}")
+            # jika pembelian
+            elif jenis == "pembelian":
+                total_belanja = transaksi.get("total_belanja", 0)
+                print(f"Total belanja: Rp{total_belanja:,}")
+                print(f"Saldo akhir  : Rp{saldo_akhir:,}")
                 print("Detail pesanan:")
                 for item in transaksi.get("pesanan", []):
-                    print(f" - {item['menu']} x{item['jumlah']} = Rp{item['subtotal']:,}")
+                    print(f" - {item.get('menu','?')} x{item.get('jumlah',0)} = Rp{item.get('subtotal',0):,}")
+            else:
+                # fallback untuk jenis yg tak dikenali
+                print("Detail transaksi tidak dikenal.")
+                print(f"Saldo akhir  : Rp{saldo_akhir:,}")
 
     # Cetak struk
     def cetak_struk(self, daftar_pesanan, total):
@@ -183,7 +216,7 @@ class Customer:
                     print("Item ditambahkan!")
                 else:
                     print("Menu tidak valid.")
-            except:
+            except ValueError:
                 print("Masukkan angka valid.")
 
         if not pesanan.daftar_pesanan:
@@ -212,6 +245,9 @@ class Customer:
             print("Saldo tetap tidak cukup. Pesanan dibatalkan.")
 
 
+# ============================
+#  MAIN PROGRAM
+# ============================
 if __name__ == "__main__":
     daftar_menu = [
         MenuItem("Espresso", 20000),
