@@ -63,6 +63,7 @@ class barista(pegawai):
       'jenis': 'barista'
     })
     return data
+  
 
 class manajemen_pegawai:
   def __init__(self):
@@ -121,11 +122,31 @@ b2 = barista('112', 'Bahlil', 'Pagi, Siang, Sore, Malam', 500, 1000)
 b2.tambah_jam_kerja(24)
 b2.tambah_penjualan(30)
 
+b3 = barista('113', 'Wowo', 'Pagi, Malam', 300, 1000)
+b3.tambah_jam_kerja(12)
+b3.tambah_penjualan(50)
+
+b4 = barista('114', 'Sahroni', 'Siang, Malam', 700, 1000)
+b4.tambah_jam_kerja(12)
+b4.tambah_penjualan(50)
+
+b5 = barista('115', 'Puan', 'Pagi, Sore, Malam', 2000, 1000)
+b5.tambah_jam_kerja(18)
+b5.tambah_penjualan(40)
+
+b6 = barista('116', 'Dodo', 'Pagi, Siang', 900, 1000)
+b6.tambah_jam_kerja(12)
+b6.tambah_penjualan(20)
+
 m = manajemen_pegawai()
 m.tambah_pegawai(b1)
 m.tambah_pegawai(b2)
+m.tambah_pegawai(b3)
+m.tambah_pegawai(b4)
+m.tambah_pegawai(b5)
+m.tambah_pegawai(b6)
 
-m.simpan_data('assets/database/pegawai.json')
+m.simpan_data('database/pegawai.json')
 
 hasil = m.cari_pegawai('111')
 
